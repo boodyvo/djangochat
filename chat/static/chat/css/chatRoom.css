@@ -1,0 +1,79 @@
+
+
+.chat-name {
+    display: inline-block;
+    position: absolute;
+    left: calc(50% - 200px);
+    font-size: 30px;
+    margin-left: 40px;
+    margin-top: 40px;
+}
+
+.btn-send {
+    display: inline-block;
+    position: relative;
+    left: calc(50% - 255px);
+    top: -47px;
+    width: 102px;
+    height: 102px;
+    /*border: none;*/
+}
+
+.textarea-message {
+    display: inline-block;
+    position: relative;
+    left: calc(50% - 250px);
+    width: 400px;
+    height: 100px;
+    resize: none;
+}
+
+.message-field {
+    position: relative;
+    padding: 10px;
+    left: calc(20% - 1px);
+    width: calc(60% - 2px);
+    /*background: aquamarine;*/
+    border: 1px solid black;
+    margin-bottom: 10px;
+    height: calc(100vh - 290px);
+    min-height: 200px;
+    overflow: scroll;
+    overflow-x: hidden;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.message-wrapper {
+    display: block;
+    position: relative;
+    width: calc(100% - 20px);
+    height: auto;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.my-message, .companion-message {
+    display: inline-block;
+    position: relative;
+    max-width: 60%;
+    padding: 5px;
+    background: #9d92ff;
+    border: 1px solid #9d92ff;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    border-radius: 5px;
+}
+
+.my-message {
+    float: left;
+}
+
+.companion-message {
+    float: right;
+}
+
+.unread-message {
+    background: #ff87a4 !important;
+    border: 1px solid #ff87a4 !important;
+}

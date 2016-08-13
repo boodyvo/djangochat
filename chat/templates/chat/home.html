@@ -1,0 +1,20 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'chat/css/style.css' %}">
+    <title> Home </title>
+</head>
+<body>
+
+    <div class="main-container">
+        You need to enter the chat </br>
+
+        <a class="main-links" href="{% url 'login' %}"> Login </a>
+        <a class="main-links" href="{% url 'signup' %}"> Signup </a>
+    </div>
+
+</body>
+</html>

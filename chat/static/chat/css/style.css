@@ -1,0 +1,71 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.main-container {
+    padding-top: 20px;
+    position: relative;
+    width: 80%;
+    left: 10%;
+    text-align: center;
+    font-size: 40px;
+}
+
+.main-links {
+    display: inline-block;
+    margin-left: 20px;
+    color: black;
+    font-size: 30px;
+    text-decoration: none;
+    background: cadetblue;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.input-field {
+    display: block;
+    position: relative;
+    width: 300px;
+    font-size: 40px;
+    left: calc(50% - 150px);
+    margin-bottom: 5px;
+}
+
+.btn-submit {
+    display: block;
+    position: relative;
+    width: 304px;
+    height: 40px;
+    left: calc(50% - 150px);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.link-mychats, .link-logout {
+    display: inline-block;
+    position: relative;
+    font-size: 30px;
+    margin-left: 40px;
+    margin-top: 40px;
+    text-decoration: none;
+    background: cadetblue;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.link-logout {
+    float: right;
+    margin-right: 40px;
+}
+
+.btn-logout {
+    display: inline-block;
+    position: relative;
+    font-size: 30px;
+    text-decoration: none;
+    background: cadetblue;
+    border-radius: 5px;
+    padding: 5px;
+}

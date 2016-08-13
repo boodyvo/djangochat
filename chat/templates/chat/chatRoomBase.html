@@ -1,0 +1,177 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'chat/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/css/chatRoom.css' %}">
+    <script src="{% static 'chat/js/jquery.min.js' %}"></script>
+    <title> Chat with someone </title>
+</head>
+<body>
+
+    <div class="chat-wrapper">
+        <a class="link-mychats" href="{% url 'chat' %}"> My chats </a>
+        <div class="chat-name"> Chat room with {{ user.username }} </div>
+        <a class="link-logout" href="{% url 'logout' %}"> Logout </a>
+        <div class="message-field">
+        </div>
+        <div class="send-message-field">
+            <textarea name="message" class="textarea-message"></textarea>
+            <input class="btn-send" type="submit" value="Send">
+        </div>
+    </div>
+
+    <script>
+        var companion = "{{ user.username }}";
+
+        var webSocket = new WebSocket('ws://' + window.location.host + '/chat/' + {{ chatId }});
+        webSocket.onopen = function() {
+
+            webSocket.send(JSON.stringify({
+                action: "INIT",
+                identifier: "{{ identifier }}",
+                roomId: {{ chatId }}
+            }));
+        }
+
+        webSocket.onmessage = function(message) {
+            var data = JSON.parse(message.data);
+            console.log(data);
+            createMessage(data);
+        }
+
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+        console.log(csrftoken)
+
+        function csrfSafeMethod(method) {
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+        function createMessage(message) {
+            var newMessageWrapper = document.createElement('div');
+            newMessageWrapper.className = "message-wrapper";
+            var newMessage = document.createElement('div');
+            if (message.author == companion) {
+                newMessage.className = "companion-message";
+                if (message.read == false) {
+                    newMessage.className += " unread-message";
+                }
+            }
+            else {
+                newMessage.className = "my-message";
+            }
+            var mess = message.message.replace(/&lt;/g, "<").replace(/&gt;/g, ">");
+            newMessage.innerHTML = mess;
+            newMessage.setAttribute("data-id", message.id);
+            newMessageWrapper.appendChild(newMessage);
+            $(".message-field")[0].appendChild(newMessageWrapper);
+            checkMessages();
+        }
+
+        function isVisible(elem) {
+            console.log("isVisible");
+            var coords = elem.getBoundingClientRect(),
+                    windowHeight = $(".message-field")[0].clientHeight;
+            console.log(coords);
+            console.log(windowHeight);
+            var topVisible = coords.top > 0 && coords.top < windowHeight;
+            var bottomVisible = coords.bottom < windowHeight && coords.bottom > 0;
+            return topVisible || bottomVisible;
+        }
+
+        function readMessage(obj) {
+            var classes = obj.className.split(' ');
+            for (var i = 0; i < classes.length; ++i) {
+                if (classes[i] == "unread-message") {
+                    classes.splice(i, 1);
+                    --i;
+                }
+            }
+            obj.className = classes.join(' ');
+            var id = obj.getAttribute("data-id");
+            data = {
+                action: "READ_MESSAGE",
+                id: id,
+                read: true
+            }
+            console.log(data);
+            $.ajax({
+                method: "POST",
+                url: "",
+                data: data,
+                beforeSend: function(xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                complete: function(response) {
+                    console.log(response.responseText);
+                }
+            })
+        }
+
+        function checkMessages() {
+            console.log("In");
+            messages = $(".unread-message");
+            for (var i = 0; i < messages.length; ++i) {
+                if (isVisible(messages[i])) {
+                    setTimeout(readMessage, 2000, messages[i]);
+                }
+            }
+
+        }
+
+        function sendMessage() {
+            var textArea = $(".textarea-message")[0];
+            if (textArea.value == "")
+                    return;
+            data = {
+                action: "SEND_MESSAGE",
+                message: textArea.value
+            }
+            textArea.value = "";
+            webSocket.send(JSON.stringify(data));
+        }
+
+        {% for message in messages %}
+            createMessage({
+                'message': "{{ message.message }}",
+                'author': "{{ message.author }}",
+                'id': {{ message.id }},
+                {% if message.read == True %}
+                'read': true
+                {% else %}
+                    'read': false
+                {% endif %}
+            })
+        {% endfor %}
+
+        $(".message-field").on('scroll', checkMessages)
+        $(".btn-send").on('click', sendMessage);
+        $(".textarea-message").keydown(function(e) {
+            if (e.ctrlKey && e.keyCode == 13) {
+                sendMessage();
+            }
+        })
+        checkMessages();
+    </script>
+
+</body>
+</html>

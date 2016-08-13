@@ -1,0 +1,14 @@
+.chat-user-wrapper {
+    display: block;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.chats-with-users {
+    display: inline-block;
+    position: relative;
+    text-decoration: none;
+    background: #73dbff;
+    border-radius: 5px;
+    padding: 5px;
+}

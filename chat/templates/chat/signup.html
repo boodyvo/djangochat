@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+      <link rel="stylesheet" href="{% static 'chat/css/style.css' %}">
+      <link rel="stylesheet" href="{% static 'chat/css/signup.css' %}">
+      <title> SignUp </title>
+</head>
+<body>
+    <div class="signup-container">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{ form }}
+            <input class="btn-submit" type="submit" value="SignUp">
+        </form>
+    </div>
+</body>
+</html>

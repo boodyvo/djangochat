@@ -1,0 +1,32 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'chat/css/style.css' %}">
+    <script src="{% static 'chat/js/jquery.min.js' %}"></script>
+    <title> Login </title>
+</head>
+<body>
+
+    <div class="main-container">
+        <form id="login-form" class="form-login" method="POST">
+            {% csrf_token %}
+            <input class="input-field" name="username" type="text" placeholder="Username" required>
+            <input class="input-field" name="password" type="password" placeholder="Password" required>
+            <input class="btn-submit" type="submit" value="Login">
+        </form>
+    </div>
+
+    <script>
+        $("#login-form").submit(function(event) {
+            preventDefault();
+            console.log(event);
+            console.log(window.location);
+        })
+    </script>
+
+
+</body>
+</html>

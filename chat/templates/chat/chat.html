@@ -1,0 +1,32 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'chat/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/css/chat.css' %}">
+    <title> Chat </title>
+</head>
+<body>
+
+    <div class="main-container">
+        <a href="{% url 'logout' %}" class="btn-logout"> Logout </a>
+
+        <form method="POST" class="form-create-chat">
+            {% csrf_token %}
+            Create chat with user
+            <input class="input-field" name="username" type="text">
+            <input class="btn-submit" type="submit" value="Create">
+        </form>
+
+        My chats: </br>
+        {% for chat in chats %}
+            <div class="chat-user-wrapper">
+                <a class="chats-with-users" href="{{ chat.id }}"> {{ chat.username }} </a>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
