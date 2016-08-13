@@ -13,6 +13,7 @@ def ws_connect(message):
 @channel_session
 def ws_message(message):
     print("----------- Message ------------")
+    timeRecieve = datetime.datetime.now()
     data = json.loads(message.content['text'])
     prefix, chatRoomId = message['path'].strip('/').split('/')
     print(chatRoomId)
@@ -38,7 +39,7 @@ def ws_message(message):
             ChatMessage.objects.create(message=data['message'],
                                        author=User.objects.get(username=message.channel_session['user']),
                                        chatRoom=ChatRoom.objects.get(id=message.channel_session['room']),
-                                       date=datetime.datetime.now())
+                                       date=timeRecieve)
             Group(message.channel_session['room']).send({'text': json.dumps({
                 "message": data['message'],
                 "author": message.channel_session['user'],
@@ -47,7 +48,6 @@ def ws_message(message):
             })})
         except:
             print("Error with message")
-
 
 @channel_session
 def ws_disconnect(message):
