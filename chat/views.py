@@ -66,8 +66,12 @@ def chatView(request):
             try:
                 print(request.POST['username'])
                 userTo = User.objects.get(username=request.POST['username'])
-                ChatRoom.objects.create(mainUser=request.user,
-                                        secondaryUser=userTo)
+                if (request.user.id < userTo.id):
+                    ChatRoom.objects.create(mainUser=request.user,
+                                            secondaryUser=userTo)
+                else:
+                    ChatRoom.objects.create(mainUser=userTo,
+                                            secondaryUser=request.user)
             except:
                 userTo = None
             print(userTo)
