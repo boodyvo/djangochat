@@ -1,4 +1,4 @@
-from django.conf.urls import url, patterns
+from django.conf.urls import url
 from django.contrib import admin
 from chat import views
 
