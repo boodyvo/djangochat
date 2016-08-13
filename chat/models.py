@@ -6,7 +6,7 @@ class ChatMessage(models.Model):
     message = models.TextField()
     author = models.ForeignKey(User)
     read = models.BooleanField(default=False)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=False)
     chatRoom = models.ForeignKey('ChatRoom')
 
 class ChatRoom(models.Model):
