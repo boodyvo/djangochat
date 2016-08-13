@@ -64,14 +64,16 @@ def chatView(request):
     if (request.user.is_authenticated()):
         if (request.method == "POST"):
             try:
-                print(request.POST['username'])
                 userTo = User.objects.get(username=request.POST['username'])
-                if (request.user.id < userTo.id):
-                    ChatRoom.objects.create(mainUser=request.user,
+                if (userTo != request.user):
+                    if (request.user.id < userTo.id):
+                        ChatRoom.objects.create(mainUser=request.user,
                                             secondaryUser=userTo)
-                else:
-                    ChatRoom.objects.create(mainUser=userTo,
+                    else:
+                        ChatRoom.objects.create(mainUser=userTo,
                                             secondaryUser=request.user)
+                else:
+                    userTo = None
             except:
                 userTo = None
             print(userTo)
